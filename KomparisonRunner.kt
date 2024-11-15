@@ -21,8 +21,9 @@ fun main() {
     val times  = mutableListOf<Duration>()
     for (i in 0..<repeats) {
         val timeTaken = measureTime {
-            sum = runner.forLoops(n)
+            sum = runner.forLoops(n + i)
         }
+        println("sum: $sum")
         println("forLoops time: $timeTaken")
         times.addLast(timeTaken)
     }
