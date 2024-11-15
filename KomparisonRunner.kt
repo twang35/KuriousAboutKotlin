@@ -1,3 +1,4 @@
+import kotlin.time.Duration
 import kotlin.time.measureTime
 
 class KomparisonRunner {
@@ -12,15 +13,21 @@ class KomparisonRunner {
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     println("hello world")
 
+    val repeats = 10
     val n: Long = 1_000_000_000
     val runner = KomparisonRunner()
     var sum: Long
-    val timeTaken = measureTime {
-        sum = runner.forLoops(n)
+    val times  = mutableListOf<Duration>()
+    for (i in 1..repeats) {
+        val timeTaken = measureTime {
+            sum = runner.forLoops(n)
+        }
+        println("forLoops time: $timeTaken")
+        times.addLast(timeTaken)
     }
-    println(sum)
-    println("forLoops: $timeTaken")
+
+    println(times)
 }
