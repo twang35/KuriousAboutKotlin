@@ -14,14 +14,12 @@ class KomparisonRunner {
 }
 
 fun main() {
-    println("hello world")
-
     val repeats = 10
     val n: Long = 1_000_000_000
     val runner = KomparisonRunner()
     var sum: Long
     val times  = mutableListOf<Duration>()
-    for (i in 1..repeats) {
+    for (i in 0..<repeats) {
         val timeTaken = measureTime {
             sum = runner.forLoops(n)
         }

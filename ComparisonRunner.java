@@ -17,7 +17,7 @@ public class ComparisonRunner {
         System.out.printf("forLoops: %s\n", times);
     }
 
-    private static long forLoops(long πn) {
+    private static long forLoops(long n) {
         long sum = 0;
 
         for (int i = 0; i < n; i += 1) {
