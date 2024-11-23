@@ -5,8 +5,8 @@ import java.util.Map;
 public class ComparisonRunner {
     Map<String, Integer> nMappings = Map.of(
         "forLoops", 1_000_000_000,
-        "appendFirst", 100_000,
-        "appendLast", 20_000_000
+        "addFirst", 100_000,
+        "addLast", 20_000_000
     );
 
     public static void main(String[] args) throws Exception {
@@ -14,7 +14,7 @@ public class ComparisonRunner {
 
         ComparisonRunner runner = new ComparisonRunner();
 
-        Method testMethod = ComparisonRunner.class.getDeclaredMethod("appendLast", long.class);
+        Method testMethod = ComparisonRunner.class.getDeclaredMethod("addLast", long.class);
 
         runner.runTest(testMethod);
     }
@@ -49,7 +49,7 @@ public class ComparisonRunner {
     }
 
     @SuppressWarnings("unused")
-    private long appendFirst(long n) {
+    private long addFirst(long n) {
         ArrayList<Long> testList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             testList.addFirst(n);
@@ -59,7 +59,7 @@ public class ComparisonRunner {
     }
 
     @SuppressWarnings("unused")
-    private long appendLast(long n) {
+    private long addLast(long n) {
         ArrayList<Long> testList = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             testList.addLast(n);
