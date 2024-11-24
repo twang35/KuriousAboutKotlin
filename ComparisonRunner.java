@@ -34,7 +34,7 @@ public class ComparisonRunner {
             System.out.println(end-start);
             times.add(end-start);
         }
-        System.out.printf("%s: %s (ms)\n", method.getName(), times);
+        System.out.printf("%s times (ms): \n%s\n", method.getName(), times);
     }
 
     @SuppressWarnings("unused")
