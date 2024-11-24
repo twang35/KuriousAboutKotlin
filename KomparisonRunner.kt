@@ -36,20 +36,32 @@ class KomparisonRunner {
     }
 }
 
-fun main() {
+private fun runTest(functionName: String, testFunction: (Long) -> Long) {
+    val nMappings: HashMap<String, Long> = hashMapOf(
+        KomparisonRunner::addLast.name to 20_000_000L,
+        KomparisonRunner::addFirst.name to 100_000L,
+        KomparisonRunner::forLoops.name to 1_000_000_000L,
+        )
+
     val repeats = 10
-    val n: Long = 100_000
-    val runner = KomparisonRunner()
-    var sum: Long
+    val n = nMappings[functionName]
+    var result: Long
     val times  = mutableListOf<Duration>()
     for (i in 0..<repeats) {
         val timeTaken = measureTime {
-            sum = runner.addFirst(n + i)
+            result = testFunction(n!! + i)
         }
-        println("sum: $sum")
-        println("addFirst time: $timeTaken")
+
+        println(result)
+        println("time: $timeTaken")
         times.addLast(timeTaken)
     }
 
-    println(times)
+    println("$functionName times: \n$times")
+}
+
+fun main() {
+    val runner = KomparisonRunner()
+    val testFunction = runner::addLast
+    runTest(testFunction.name, testFunction)
 }
