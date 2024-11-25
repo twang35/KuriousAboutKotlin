@@ -12,7 +12,8 @@ public class ComparisonRunner {
         "forLoops", 1_000_000_000,
         "addFirst", 100_000,
         "addLast", 20_000_000,
-        "generateLinkedListChain", 100_000_000
+        "generateLinkedListChain", 100_000_000,
+        "fibonacci", 35
     );
 
     public static void main(String[] args) throws Exception {
@@ -20,7 +21,7 @@ public class ComparisonRunner {
 
         ComparisonRunner runner = new ComparisonRunner();
 
-        Method testMethod = ComparisonRunner.class.getDeclaredMethod("generateLinkedListChain", long.class);
+        Method testMethod = ComparisonRunner.class.getDeclaredMethod("fibonacci", long.class);
 
         runner.runTest(testMethod);
     }
@@ -85,5 +86,13 @@ public class ComparisonRunner {
         }
 
         return cur.value;
+    }
+
+    @SuppressWarnings("unused")
+    private long fibonacci(long n) {
+        if (n <= 2)
+            return 1;
+
+        return fibonacci(n-2) + fibonacci(n-1);
     }
 }

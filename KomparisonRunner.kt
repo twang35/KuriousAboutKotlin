@@ -47,6 +47,14 @@ class KomparisonRunner {
 
         return cur.value.toLong()
     }
+
+    @Suppress("unused")
+    fun fibonacci(n: Long): Long {
+        if (n <= 2)
+            return 1
+
+        return fibonacci(n-2) + fibonacci(n-1)
+    }
 }
 
 class LinkedList {
@@ -60,6 +68,7 @@ private fun runTest(functionName: String, testFunction: (Long) -> Long) {
         KomparisonRunner::addFirst.name to 100_000L,
         KomparisonRunner::forLoops.name to 1_000_000_000L,
         KomparisonRunner::generateLinkedListChain.name to 100_000_000L,
+        KomparisonRunner::fibonacci.name to 35L,
         )
 
     val repeats = 10
@@ -81,6 +90,6 @@ private fun runTest(functionName: String, testFunction: (Long) -> Long) {
 
 fun main() {
     val runner = KomparisonRunner()
-    val testFunction = runner::generateLinkedListChain
+    val testFunction = runner::fibonacci
     runTest(testFunction.name, testFunction)
 }
