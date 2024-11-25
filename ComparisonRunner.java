@@ -3,10 +3,16 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 public class ComparisonRunner {
+    public static class LinkedList {
+        LinkedList next;
+        int value;
+    }
+
     Map<String, Integer> nMappings = Map.of(
         "forLoops", 1_000_000_000,
         "addFirst", 100_000,
-        "addLast", 20_000_000
+        "addLast", 20_000_000,
+        "generateLinkedListChain", 100_000_000
     );
 
     public static void main(String[] args) throws Exception {
@@ -14,7 +20,7 @@ public class ComparisonRunner {
 
         ComparisonRunner runner = new ComparisonRunner();
 
-        Method testMethod = ComparisonRunner.class.getDeclaredMethod("addLast", long.class);
+        Method testMethod = ComparisonRunner.class.getDeclaredMethod("generateLinkedListChain", long.class);
 
         runner.runTest(testMethod);
     }
@@ -66,5 +72,18 @@ public class ComparisonRunner {
         }
 
         return testList.getLast();
+    }
+
+    @SuppressWarnings("unused")
+    private long generateLinkedListChain(long n) {
+        LinkedList cur = new LinkedList();
+        cur.value = 0;
+        for (int i = 0; i < n; i++) {
+            cur.next = new LinkedList();
+            cur = cur.next;
+            cur.value = i;
+        }
+
+        return cur.value;
     }
 }

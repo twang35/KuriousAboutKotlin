@@ -34,6 +34,24 @@ class KomparisonRunner {
 
         return arraylist.last
     }
+
+    @Suppress("unused")
+    fun generateLinkedListChain(n: Long): Long {
+        var cur = LinkedList()
+        cur.value = 0
+        for (i in 0 until n) {
+            cur.next = LinkedList()
+            cur = cur.next!!
+            cur.value = i.toInt()
+        }
+
+        return cur.value.toLong()
+    }
+}
+
+class LinkedList {
+    var next: LinkedList? = null
+    var value: Int = 0
 }
 
 private fun runTest(functionName: String, testFunction: (Long) -> Long) {
@@ -41,6 +59,7 @@ private fun runTest(functionName: String, testFunction: (Long) -> Long) {
         KomparisonRunner::addLast.name to 20_000_000L,
         KomparisonRunner::addFirst.name to 100_000L,
         KomparisonRunner::forLoops.name to 1_000_000_000L,
+        KomparisonRunner::generateLinkedListChain.name to 100_000_000L,
         )
 
     val repeats = 10
@@ -62,6 +81,6 @@ private fun runTest(functionName: String, testFunction: (Long) -> Long) {
 
 fun main() {
     val runner = KomparisonRunner()
-    val testFunction = runner::addLast
+    val testFunction = runner::generateLinkedListChain
     runTest(testFunction.name, testFunction)
 }
