@@ -57,7 +57,7 @@ class KomparisonRunner {
         return fibonacci(n-2) + fibonacci(n-1)
     }
 
-    fun waitCoroutineTest(n: Long): Long = runBlocking {
+    fun waitCoroutine(n: Long): Long = runBlocking {
         var totalTimeWaited = 0L
         val jobs = ArrayList<Deferred<Long>>()
         repeat(n.toInt()) {
@@ -74,7 +74,7 @@ class KomparisonRunner {
         totalTimeWaited
     }
 
-    suspend fun wait(timeMs: Long): Long {
+    private suspend fun wait(timeMs: Long): Long {
         delay(timeMs)
         return timeMs
     }
@@ -92,7 +92,7 @@ private fun runTest(functionName: String, testFunction: (Long) -> Long) {
         KomparisonRunner::forLoops.name to 1_000_000_000L,
         KomparisonRunner::generateLinkedListChain.name to 100_000_000L,
         KomparisonRunner::fibonacci.name to 35L,
-        KomparisonRunner::waitCoroutineTest.name to 1_000_000L,
+        KomparisonRunner::waitCoroutine.name to 100_000L,
         )
 
     val repeats = 10
@@ -114,6 +114,6 @@ private fun runTest(functionName: String, testFunction: (Long) -> Long) {
 
 fun main() {
     val runner = KomparisonRunner()
-    val testFunction = runner::waitCoroutineTest
+    val testFunction = runner::waitCoroutine
     runTest(testFunction.name, testFunction)
 }
