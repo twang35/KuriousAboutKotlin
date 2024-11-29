@@ -1,5 +1,6 @@
 import kotlin.time.Duration
 import kotlin.time.measureTime
+import kotlinx.coroutines.*
 
 class KomparisonRunner {
     @Suppress("unused")
@@ -55,6 +56,28 @@ class KomparisonRunner {
 
         return fibonacci(n-2) + fibonacci(n-1)
     }
+
+    fun waitCoroutineTest(n: Long): Long = runBlocking {
+        var totalTimeWaited = 0L
+        val jobs = ArrayList<Deferred<Long>>()
+        repeat(n.toInt()) {
+            val timeWaited = async {
+                wait(100L)
+            }
+            jobs.add(timeWaited)
+        }
+
+        for (job in jobs) {
+            totalTimeWaited += job.await()
+        }
+
+        totalTimeWaited
+    }
+
+    suspend fun wait(timeMs: Long): Long {
+        delay(timeMs)
+        return timeMs
+    }
 }
 
 class LinkedList {
@@ -69,6 +92,7 @@ private fun runTest(functionName: String, testFunction: (Long) -> Long) {
         KomparisonRunner::forLoops.name to 1_000_000_000L,
         KomparisonRunner::generateLinkedListChain.name to 100_000_000L,
         KomparisonRunner::fibonacci.name to 35L,
+        KomparisonRunner::waitCoroutineTest.name to 1_000_000L,
         )
 
     val repeats = 10
@@ -90,6 +114,6 @@ private fun runTest(functionName: String, testFunction: (Long) -> Long) {
 
 fun main() {
     val runner = KomparisonRunner()
-    val testFunction = runner::fibonacci
+    val testFunction = runner::waitCoroutineTest
     runTest(testFunction.name, testFunction)
 }
