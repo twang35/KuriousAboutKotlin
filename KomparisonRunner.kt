@@ -110,7 +110,7 @@ private fun runTest(functionName: String, testFunction: (Long) -> Long) {
         KomparisonRunner::generateLinkedListChain.name to 100_000_000L,
         KomparisonRunner::fibonacci.name to 35L,
         KomparisonRunner::waitCoroutine.name to 100_000L,
-        KomparisonRunner::fibonacciCoroutine.name to 42L,
+        KomparisonRunner::fibonacciCoroutine.name to 32L,
         )
 
     val repeats = 10

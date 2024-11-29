@@ -19,7 +19,7 @@ public class ComparisonRunner {
         "generateLinkedListChain", 100_000_000,
         "fibonacci", 35,
         "waitExecutorService", 100_000,
-        "fibonacciExecutorService", 42
+        "fibonacciExecutorService", 32
     );
 
     public static void main(String[] args) throws Exception {
@@ -129,7 +129,7 @@ public class ComparisonRunner {
 
     @SuppressWarnings("unused")
     private long fibonacciExecutorService(long n) throws Exception {
-        long totalTimeWaited = 0;
+        long totalFibSum = 0;
         ArrayList<Future<Long>> jobs = new ArrayList<>();
         Callable<Long> c = () -> fibonacci(n);
 
@@ -140,10 +140,10 @@ public class ComparisonRunner {
             }
 
             for (Future<Long> j : jobs) {
-                totalTimeWaited += j.get();
+                totalFibSum += j.get();
             }
         }
 
-        return totalTimeWaited;
+        return totalFibSum;
     }
 }
