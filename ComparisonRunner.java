@@ -18,7 +18,8 @@ public class ComparisonRunner {
         "addLast", 20_000_000,
         "generateLinkedListChain", 100_000_000,
         "fibonacci", 35,
-        "waitExecutorService", 100_000
+        "waitExecutorService", 100_000,
+        "fibonacciExecutorService", 42
     );
 
     public static void main(String[] args) throws Exception {
@@ -26,7 +27,7 @@ public class ComparisonRunner {
 
         ComparisonRunner runner = new ComparisonRunner();
 
-        Method testMethod = ComparisonRunner.class.getDeclaredMethod("waitExecutorService", long.class);
+        Method testMethod = ComparisonRunner.class.getDeclaredMethod("fibonacciExecutorService", long.class);
 
         runner.runTest(testMethod);
     }
@@ -124,5 +125,25 @@ public class ComparisonRunner {
     private long waitTest() throws InterruptedException {
         Thread.sleep(100L);
         return 100L;
+    }
+
+    @SuppressWarnings("unused")
+    private long fibonacciExecutorService(long n) throws Exception {
+        long totalTimeWaited = 0;
+        ArrayList<Future<Long>> jobs = new ArrayList<>();
+        Callable<Long> c = () -> fibonacci(n);
+
+        try (ExecutorService executorService = Executors.newCachedThreadPool()) {
+            for (int i = 0; i < n; i++) {
+                Future<Long> job = executorService.submit(c);
+                jobs.add(job);
+            }
+
+            for (Future<Long> j : jobs) {
+                totalTimeWaited += j.get();
+            }
+        }
+
+        return totalTimeWaited;
     }
 }

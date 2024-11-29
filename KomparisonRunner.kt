@@ -78,6 +78,23 @@ class KomparisonRunner {
         delay(timeMs)
         return timeMs
     }
+
+    fun fibonacciCoroutine(n: Long): Long = runBlocking {
+        var totalFibSum = 0L
+        val jobs = ArrayList<Deferred<Long>>()
+        repeat(n.toInt()) {
+            val result = async {
+                fibonacci(n)
+            }
+            jobs.add(result)
+        }
+
+        for (job in jobs) {
+            totalFibSum += job.await()
+        }
+
+        totalFibSum
+    }
 }
 
 class LinkedList {
@@ -93,6 +110,7 @@ private fun runTest(functionName: String, testFunction: (Long) -> Long) {
         KomparisonRunner::generateLinkedListChain.name to 100_000_000L,
         KomparisonRunner::fibonacci.name to 35L,
         KomparisonRunner::waitCoroutine.name to 100_000L,
+        KomparisonRunner::fibonacciCoroutine.name to 42L,
         )
 
     val repeats = 10
@@ -114,6 +132,6 @@ private fun runTest(functionName: String, testFunction: (Long) -> Long) {
 
 fun main() {
     val runner = KomparisonRunner()
-    val testFunction = runner::waitCoroutine
+    val testFunction = runner::fibonacciCoroutine
     runTest(testFunction.name, testFunction)
 }
