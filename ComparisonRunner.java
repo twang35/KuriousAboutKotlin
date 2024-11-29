@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class ComparisonRunner {
     public static class LinkedList {
@@ -13,7 +17,8 @@ public class ComparisonRunner {
         "addFirst", 100_000,
         "addLast", 20_000_000,
         "generateLinkedListChain", 100_000_000,
-        "fibonacci", 35
+        "fibonacci", 35,
+        "waitExecutorService", 100_000
     );
 
     public static void main(String[] args) throws Exception {
@@ -21,7 +26,7 @@ public class ComparisonRunner {
 
         ComparisonRunner runner = new ComparisonRunner();
 
-        Method testMethod = ComparisonRunner.class.getDeclaredMethod("fibonacci", long.class);
+        Method testMethod = ComparisonRunner.class.getDeclaredMethod("waitExecutorService", long.class);
 
         runner.runTest(testMethod);
     }
@@ -38,7 +43,7 @@ public class ComparisonRunner {
             long sum = (long) method.invoke(this, parameters);
             long end = System.currentTimeMillis();
             System.out.println(sum);
-            System.out.println(end-start);
+            System.out.printf("%s ms\n", end-start);
             times.add(end-start);
         }
         System.out.printf("%s times (ms): \n%s\n", method.getName(), times);
@@ -94,5 +99,30 @@ public class ComparisonRunner {
             return 1;
 
         return fibonacci(n-2) + fibonacci(n-1);
+    }
+
+    @SuppressWarnings("unused")
+    private long waitExecutorService(long n) throws Exception {
+        long totalTimeWaited = 0;
+        ArrayList<Future<Long>> jobs = new ArrayList<>();
+        Callable<Long> c = this::waitTest;
+
+        try (ExecutorService executorService = Executors.newCachedThreadPool()) {
+            for (int i = 0; i < n; i++) {
+                Future<Long> job = executorService.submit(c);
+                jobs.add(job);
+            }
+
+            for (Future<Long> j : jobs) {
+                totalTimeWaited += j.get();
+            }
+        }
+
+        return totalTimeWaited;
+    }
+
+    private long waitTest() throws InterruptedException {
+        Thread.sleep(100L);
+        return 100L;
     }
 }
